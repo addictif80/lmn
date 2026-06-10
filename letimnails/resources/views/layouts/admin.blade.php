@@ -7,7 +7,7 @@
     <title>@yield('title', 'Administration LetiMNails')</title>
     <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         .admin-sidebar { background: #1a1a2e; }
         .admin-sidebar nav a svg { width:18px;height:18px; }
@@ -136,7 +136,7 @@
         </main>
     </div>
 
-    <script src="{{ asset('js/app.js') }}"></script>
+
     @stack('scripts')
 </body>
 </html>
