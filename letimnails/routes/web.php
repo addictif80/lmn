@@ -22,15 +22,15 @@ Route::post('/panier/ajouter/{slug}', [ShopController::class, 'addToCart'])->nam
 Route::post('/panier/mettre-a-jour', [ShopController::class, 'updateCart'])->name('cart.update');
 Route::post('/panier/supprimer/{rowId}', [ShopController::class, 'removeFromCart'])->name('cart.remove');
 Route::get('/commander', [ShopController::class, 'checkout'])->name('checkout');
-Route::post('/commander', [ShopController::class, 'placeOrder'])->name('checkout.place');
-Route::get('/commande/{orderNumber}', [ShopController::class, 'confirmation'])->name('order.confirmation');
+Route::post('/commander', [ShopController::class, 'placeOrder'])->name('checkout.place')->middleware('throttle:10,1');
+Route::get('/commande/{orderNumber}', [ShopController::class, 'confirmation'])->name('order.confirmation')->middleware('auth');
 
 // Services
 Route::get('/demander-un-devis', [ServiceController::class, 'demandeDevis'])->name('devis');
-Route::post('/demander-un-devis', [ServiceController::class, 'soumettreDevis'])->name('devis.submit');
+Route::post('/demander-un-devis', [ServiceController::class, 'soumettreDevis'])->name('devis.submit')->middleware('throttle:5,1');
 Route::get('/devis-confirme', [ServiceController::class, 'devisConfirmation'])->name('devis.confirmation');
 Route::get('/reservation-prestation', [ServiceController::class, 'reservation'])->name('reservation');
-Route::post('/reservation-prestation', [ServiceController::class, 'reserver'])->name('reservation.submit');
+Route::post('/reservation-prestation', [ServiceController::class, 'reserver'])->name('reservation.submit')->middleware('throttle:5,1');
 Route::get('/reservation-confirmee', [ServiceController::class, 'reservationConfirmation'])->name('reservation.confirmation');
 
 // Account

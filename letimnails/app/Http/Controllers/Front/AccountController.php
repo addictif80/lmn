@@ -71,7 +71,7 @@ class AccountController extends Controller
     {
         $validated = $request->validate([
             'current_password' => 'required|current_password',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:12|confirmed',
         ]);
 
         auth()->user()->update([
