@@ -225,8 +225,18 @@ class SettingsController extends Controller
 
     public function updateGeneral(Request $request)
     {
-        $settings = $request->except('_token');
-        foreach ($settings as $key => $value) {
+        $validated = $request->validate([
+            'site_name' => 'nullable|string|max:255',
+            'site_description' => 'nullable|string|max:1000',
+            'contact_email' => 'nullable|email|max:255',
+            'contact_phone' => 'nullable|string|max:20',
+            'contact_address' => 'nullable|string|max:500',
+            'facebook_url' => 'nullable|url|max:500',
+            'instagram_url' => 'nullable|url|max:500',
+            'tiktok_url' => 'nullable|url|max:500',
+        ]);
+
+        foreach ($validated as $key => $value) {
             Setting::set($key, $value, 'general');
         }
 
@@ -242,8 +252,13 @@ class SettingsController extends Controller
 
     public function updateShipping(Request $request)
     {
-        $settings = $request->except('_token');
-        foreach ($settings as $key => $value) {
+        $validated = $request->validate([
+            'shipping_cost' => 'required|numeric|min:0|max:999',
+            'free_shipping_threshold' => 'required|numeric|min:0|max:9999',
+            'shipping_delay' => 'nullable|string|max:100',
+        ]);
+
+        foreach ($validated as $key => $value) {
             Setting::set($key, $value, 'shipping');
         }
 
@@ -259,8 +274,13 @@ class SettingsController extends Controller
 
     public function updateAppearance(Request $request)
     {
-        $settings = $request->except('_token');
-        foreach ($settings as $key => $value) {
+        $validated = $request->validate([
+            'primary_color' => 'nullable|string|max:20',
+            'secondary_color' => 'nullable|string|max:20',
+            'font_family' => 'nullable|string|max:100',
+        ]);
+
+        foreach ($validated as $key => $value) {
             Setting::set($key, $value, 'appearance');
         }
 
@@ -288,7 +308,7 @@ class SettingsController extends Controller
     public function uploadMedia(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:jpeg,png,webp,gif,svg,pdf,doc,docx|max:10240',
+            'file' => 'required|file|mimes:jpeg,png,webp,gif,svg,pdf|max:5120',
             'collection' => 'nullable|string',
         ]);
 

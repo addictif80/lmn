@@ -63,6 +63,9 @@ class ProductController extends Controller
         $product = Product::create($validated);
 
         if ($request->hasFile('images')) {
+            $request->validate([
+                'images.*' => 'image|mimes:jpeg,png,webp|max:3072',
+            ]);
             foreach ($request->file('images') as $i => $image) {
                 $path = $image->store('products', 'public');
                 ProductImage::create([
@@ -122,6 +125,9 @@ class ProductController extends Controller
         $product->update($validated);
 
         if ($request->hasFile('images')) {
+            $request->validate([
+                'images.*' => 'image|mimes:jpeg,png,webp|max:3072',
+            ]);
             foreach ($request->file('images') as $i => $image) {
                 $path = $image->store('products', 'public');
                 ProductImage::create([

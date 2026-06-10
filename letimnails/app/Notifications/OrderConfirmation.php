@@ -25,12 +25,13 @@ class OrderConfirmation extends Notification implements ShouldQueue
 
     public function toMail($notifiable): MailMessage
     {
+        $name = $notifiable->name ?? ($this->order->shipping_address['first_name'] ?? 'Client');
+
         return (new MailMessage)
             ->subject('Confirmation de commande #' . $this->order->order_number)
-            ->greeting('Bonjour ' . $notifiable->name)
+            ->greeting('Bonjour ' . $name)
             ->line('Votre commande #' . $this->order->order_number . ' a bien été confirmée.')
             ->line('Montant total : ' . number_format($this->order->total, 2) . ' €')
-            ->action('Voir ma commande', route('account.order.detail', $this->order->order_number))
             ->line('Merci de votre confiance !');
     }
 }
