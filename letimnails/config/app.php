@@ -50,7 +50,6 @@ return [
         App\Providers\RouteServiceProvider::class,
     ],
     'aliases' => Illuminate\Support\Facades\Facade::defaultAliases()->merge([
-        'Image' => Intervention\Image\Facades\Image::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
         'Purifier' => Mews\Purifier\Facades\Purifier::class,
     ])->toArray(),
