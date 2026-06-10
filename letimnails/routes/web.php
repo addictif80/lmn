@@ -105,8 +105,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Pages CMS
     Route::get('/pages', [SettingsController::class, 'pages'])->name('pages');
+    Route::get('/pages/create', [SettingsController::class, 'createPage'])->name('pages.create');
+    Route::post('/pages', [SettingsController::class, 'storePage'])->name('pages.store');
     Route::get('/pages/{page}/edit', [SettingsController::class, 'editPage'])->name('pages.edit');
     Route::post('/pages/{page}', [SettingsController::class, 'updatePage'])->name('pages.update');
+    Route::delete('/pages/{page}', [SettingsController::class, 'deletePage'])->name('pages.delete');
 
     // FAQs
     Route::get('/faqs', [SettingsController::class, 'faqs'])->name('faqs');

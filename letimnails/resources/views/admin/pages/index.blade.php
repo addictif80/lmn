@@ -2,6 +2,9 @@
 @section('title', 'Pages CMS')
 
 @section('content')
+<div style="margin-bottom:15px">
+    <a href="{{ route('admin.pages.create') }}" class="btn btn-primary">+ Nouvelle page</a>
+</div>
 <div style="overflow-x:auto">
     <table class="admin-table">
         <thead>

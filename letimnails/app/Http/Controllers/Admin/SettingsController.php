@@ -23,6 +23,31 @@ class SettingsController extends Controller
         return view('admin.pages.index', compact('pages'));
     }
 
+    public function createPage()
+    {
+        return view('admin.pages.form');
+    }
+
+    public function storePage(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:pages,slug|regex:/^[a-z0-9\-]+$/',
+            'content' => 'nullable|string',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'is_active' => 'boolean',
+        ]);
+
+        $validated['is_active'] = $request->boolean('is_active');
+        $validated['slug'] = Str::slug($validated['slug']);
+
+        $page = Page::create($validated);
+
+        return redirect()->route('admin.pages.edit', $page)
+            ->with('success', 'Page créée avec succès');
+    }
+
     public function editPage(Page $page)
     {
         return view('admin.pages.form', compact('page'));
@@ -32,6 +57,7 @@ class SettingsController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:pages,slug,' . $page->id . '|regex:/^[a-z0-9\-]+$/',
             'content' => 'nullable|string',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
@@ -39,10 +65,18 @@ class SettingsController extends Controller
         ]);
 
         $validated['is_active'] = $request->boolean('is_active');
+        $validated['slug'] = Str::slug($validated['slug']);
         $page->update($validated);
 
         return redirect()->route('admin.pages')
             ->with('success', 'Page mise à jour');
+    }
+
+    public function deletePage(Page $page)
+    {
+        $page->delete();
+        return redirect()->route('admin.pages')
+            ->with('success', 'Page supprimée');
     }
 
     // FAQ
